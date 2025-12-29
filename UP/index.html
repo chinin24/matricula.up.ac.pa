@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>matricula.up.ac.pa/sevup</title>
+    <style>
+        /* RESET DE ESTILOS */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fff;
+            color: #333;
+            font-size: 11px;
+        }
+
+        /* HEADER AZUL SUPERIOR */
+        .top-header {
+            background-color: #002d57;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-info { display: flex; align-items: center; }
+        .user-photo { 
+            width: 42px; height: 42px; 
+            background: #444; border: 1px solid #666; 
+            margin-right: 12px;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACoAAAAqCAYAAADF886LAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5QMLCg0X7Zz9WAAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkZW3EAAAASElEQVRYw+3PsQ0AIAzAsP7/ae0XpLA09yAisreTSpIkyfLpXmYmO/u7BvX6697vH6YpSZIkSZIkSZIkSZIkSZIkSZIkSZIkSXL9AL6fGAnm809UAAAAAElFTkSuQmCC');
+            background-size: cover;
+        }
+
+        .user-text b { font-size: 13px; color: #ffd700; }
+        .user-text span { font-size: 10px; display: block; margin-top: 2px; }
+
+        .up-logo-header { text-align: right; display: flex; align-items: center; gap: 10px; }
+        .up-logo-header img { height: 45px; }
+
+        /* BARRA DE NAVEGACIÓN */
+        .nav-bar {
+            background-color: #1e70b8;
+            display: flex;
+            padding: 0 15px;
+            border-bottom: 2px solid #155a96;
+        }
+
+        .nav-item {
+            color: white;
+            padding: 10px 14px;
+            text-decoration: none;
+            font-size: 10px;
+            font-weight: bold;
+            border-right: 1px solid rgba(255,255,255,0.2);
+            text-transform: uppercase;
+        }
+
+        .nav-item:hover { background-color: #155a96; }
+        .btn-exit { background-color: #d9534f; margin-left: auto; border: none; }
+
+        /* CONTENIDO PRINCIPAL */
+        .container { padding: 15px 40px; }
+        .breadcrumb { font-size: 10px; color: #777; margin-bottom: 15px; }
+        .breadcrumb b { color: #333; }
+        h1 { color: #002d57; font-size: 22px; font-weight: normal; margin-bottom: 20px; }
+
+        /* CUADRO DE DATOS */
+        .student-data-box {
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            padding: 15px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.2fr;
+            gap: 12px;
+            background-color: #fdfdfd;
+            margin-bottom: 5px;
+        }
+
+        .data-row span { color: #1e70b8; font-weight: bold; margin-right: 5px; }
+        .disclaimer { text-align: right; font-size: 10px; color: #888; margin-bottom: 20px; font-style: italic; }
+
+        /* PESTAÑAS A LA IZQUIERDA Y EXPORTACIÓN A LA DERECHA */
+        .tabs-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 1px solid #ccc;
+            margin-top: 20px;
+        }
+
+        .tabs { display: flex; }
+        .tab {
+            padding: 8px 18px;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            background: #f1f1f1;
+            margin-right: 4px;
+            border-radius: 4px 4px 0 0;
+            color: #666;
+            cursor: pointer;
+        }
+        .tab.active { 
+            background: white; 
+            border-top: 3px solid #1e70b8; 
+            font-weight: bold; 
+            color: #333;
+            margin-bottom: -1px;
+        }
+
+        .export-tools { 
+            text-align: right; 
+            padding-bottom: 5px; 
+            font-size: 10px; 
+            color: #444; 
+        }
+        .export-tools span { margin-left: 15px; cursor: pointer; }
+
+        /* TABLAS DE NOTAS */
+        .semester-container {
+            border: 1px solid #c5ced9;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .semester-title {
+            color: #1e70b8;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+        th {
+            background: linear-gradient(to bottom, #f8fafd, #d9e2ee);
+            border: 1px solid #b8c1cc;
+            padding: 8px 4px;
+            color: #445;
+            font-size: 10px;
+            text-align: center;
+        }
+
+        td {
+            border: 1px solid #e1e6eb;
+            padding: 7px 5px;
+            text-align: center;
+        }
+
+        .text-left { text-align: left; padding-left: 10px; }
+        tr:nth-child(even) { background-color: #fafafa; }
+        .total-row { background-color: #f1f4f8; font-weight: bold; }
+
+        /* ENLACES INFERIORES A LA IZQUIERDA */
+        .bottom-links { 
+            display: flex; 
+            justify-content: flex-start; 
+            gap: 20px; 
+            margin-top: 10px; 
+            color: #1e70b8; 
+        }
+
+        footer {
+            margin-top: 50px;
+            padding: 20px 40px;
+            border-top: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #666;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<header class="top-header">
+    <div class="user-info">
+        <div class="user-photo"></div>
+        <div class="user-text">
+            <b>CESAR LUIS DIAZ</b><br>
+            <span>Estudiante | Último acceso: 28/12/2025 17:07</span>
+        </div>
+    </div>
+    <div class="up-logo-header">
+        <div style="text-align: right;">
+            <span style="font-size: 11px;">Secretaría Virtual</span><br>
+            <b style="font-size: 14px;">UNIVERSIDAD DE PANAMÁ</b>
+        </div>
+        <img src="up-logo.jpg" alt="Logo UP">
+    </div>
+</header>
+
+<nav class="nav-bar">
+    <a href="#" class="nav-item">INICIO</a>
+    <a href="#" class="nav-item">MI PERFIL ▾</a>
+    <a href="#" class="nav-item">TRÁMITE DE ESTUDIANTE ▾</a>
+    <a href="#" class="nav-item">INFORMACIÓN DE INTERÉS ▾</a>
+    <a href="#" class="nav-item">PAGOS ▾</a>
+    <a href="#" class="nav-item">ENCUESTAS ▾</a>
+    <a href="#" class="nav-item btn-exit">✖ SALIR</a>
+</nav>
+
+<main class="container">
+    <div class="breadcrumb">Inicio > Información de interés > <b>Notas</b></div>
+    <h1>NOTAS</h1>
+
+    <div class="student-data-box">
+        <div class="data-row"><span>• Cédula:</span> 08-00-1024-01183</div>
+        <div class="data-row"><span>• Nombre:</span> CESAR LUIS</div>
+        <div class="data-row"><span>• Apellido Paterno:</span> DIAZ</div>
+        <div class="data-row"><span>• Sede:</span> Panama</div>
+        <div class="data-row"><span>• Facultad:</span> 05 - Derecho y Ciencias Políticas</div>
+        <div class="data-row"><span>• Escuela:</span> 01 - Derecho y Ciencias Políticas</div>
+        <div class="data-row"><span>• Carrera:</span> 01 - Lic. Derecho</div>
+        <div class="data-row"><span>• Plan:</span> 0008</div>
+    </div>
+    <div class="disclaimer">Este documento tiene carácter informativo y carece de validez oficial.</div>
+
+    <div class="tabs-wrapper">
+        <div class="tabs">
+            <div class="tab active">Créditos por plan de estudios actual</div>
+            <div class="tab">Créditos completos</div>
+            <div class="tab">Créditos por plan</div>
+        </div>
+        
+        <div class="export-tools">
+            <span>📗 Exportar a Excel</span>
+            <span>📕 Exportar a PDF</span>
+        </div>
+    </div>
+
+    <div class="semester-container" style="margin-top: 20px;">
+        <div class="semester-title">PRIMER SEMESTRE DE 2025</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>C.Hor</th><th>Abrev.</th><th>Asig.</th><th>Denominación</th><th>Num.</th><th>CR.</th><th>Nota</th><th>Puntos</th><th>Indice</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>1015</td><td>SOC</td><td>30265</td><td class="text-left">SOCIOLOGIA JURIDICA</td><td>120</td><td>2</td><td>B</td><td>4</td><td>-</td></tr>
+                <tr><td>1017</td><td>DER</td><td>30397</td><td class="text-left">DERECHOS HUMANOS</td><td>133</td><td>2</td><td>B</td><td>4</td><td>-</td></tr>
+                <tr><td>1010</td><td>HIST</td><td>27405</td><td class="text-left">HIST. DE LAS RELACIONES DE PMA CON LOS E.E.U.U.</td><td>165</td><td>3</td><td>S</td><td>0</td><td>-</td></tr>
+                <tr><td>1016</td><td>DER</td><td>30396</td><td class="text-left">METODOLOGÍA DE LA INVESTIGACIÓN JURIDICA I</td><td>130</td><td>2</td><td>N</td><td>0</td><td>-</td></tr>
+                <tr><td>1011</td><td>DER</td><td>30391</td><td class="text-left">INTRODUCCIÓN AL DERECHO I</td><td>100</td><td>3</td><td>F</td><td>0</td><td>-</td></tr>
+                <tr><td>1012</td><td>CP</td><td>30292</td><td class="text-left">CIENCIA POLÍTICA I</td><td>105</td><td>3</td><td>F</td><td>0</td><td>-</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="semester-container">
+        <div class="semester-title">SEGUNDO SEMESTRE DE 2025</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>C.Hor</th><th>Abrev.</th><th>Asig.</th><th>Denominación</th><th>Num.</th><th>CR.</th><th>Nota</th><th>Puntos</th><th>Indice</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>1042</td><td>CP</td><td>30399</td><td class="text-left">CIENCIA POLITICA II</td><td>140</td><td>3</td><td>C</td><td>4</td><td>-</td></tr>
+                <tr><td>1040</td><td>HIST</td><td>27407</td><td class="text-left">HIST DE LAS RELACIONES DE PMA CON LOS E.E.U.U. II</td><td>166</td><td>3</td><td>A</td><td>9</td><td>-</td></tr>
+                <tr><td>2014</td><td>DER</td><td>30404</td><td class="text-left">DERECHO CIVIL II (PERSONA Y NEGOCIO JURÍDICO)</td><td>165</td><td>3</td><td>C</td><td>4</td><td>-</td></tr>
+                <tr><td>1047</td><td>DER</td><td>30401</td><td class="text-left">FILOSOFÍA DEL DERECHO</td><td>150</td><td>3</td><td>B</td><td>6</td><td>-</td></tr>
+                <tr><td>2023</td><td>DER</td><td>30400</td><td class="text-left">DERECHO ROMANO II</td><td>145</td><td>3</td><td>B</td><td>6</td><td>-</td></tr>
+                <tr><td>1015</td><td>ECO</td><td>30402</td><td class="text-left">ECONOMÍA POLÍTICA</td><td>155</td><td>2</td><td>A</td><td>9</td><td>-</td></tr>
+                
+                <tr class="total-row">
+                    <td colspan="4" style="text-align: right;">Total acumulativo:</td>
+                    <td>-</td><td>17</td><td>-</td><td>38</td><td>2.23</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="bottom-links">
+        <span>❓ Ayuda de Pantalla</span>
+        <span>👤 Manual de Usuario</span>
+        <span>❓ Preguntas Frecuentes</span>
+    </div>
+</main>
+
+<footer>
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <img src="up-logo.jpg" alt="Logo UP" style="height: 40px;">
+        <span>UNIVERSIDAD DE PANAMÁ</span>
+    </div>
+    <div>Dirección de Tecnología de la Información y Comunicación.</div>
+</footer>
+
+</body>
+</html>
